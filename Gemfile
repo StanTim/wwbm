@@ -3,8 +3,6 @@ source 'https://rubygems.org'
 ruby '~> 2.4.1'
 gem 'rails', '~> 4.2.6'
 
-gem 'sqlite3', '~> 1.3.6'
-
 # Удобная админка для управления любыми сущностями
 gem 'rails_admin'
 

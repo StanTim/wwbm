@@ -21,6 +21,5 @@
 
 .DS_Store
 config/secrets.yml
-Gemfile.lock
 .ruby-version
 /db
