@@ -33,7 +33,7 @@ end
 group :production do
   # гем, улучшающий вывод логов на Heroku
   # https://devcenter.heroku.com/articles/getting-started-with-rails4#heroku-gems
-  ruby '~> 2.6.9'
+  ruby '~> 2.7.4'
   gem 'rails_12factor'
   gem 'pg'
 end
