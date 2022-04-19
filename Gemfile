@@ -35,5 +35,5 @@ group :production do
   # https://devcenter.heroku.com/articles/getting-started-with-rails4#heroku-gems
   ruby '~> 2.4.1'
   gem 'rails_12factor'
-  gem 'pg'
+  gem 'pg', '~> 1.1.4'
 end
