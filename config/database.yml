@@ -13,4 +13,6 @@ test:
 
 production:
   adapter: postgresql
-  database: project_production
+  database: KHSM62_production
+  username: KHSM62
+  password: <%= ENV['KHSM62_DATABASE_PASSWORD'] %>
