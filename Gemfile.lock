@@ -70,11 +70,8 @@ GEM
     diff-lcs (1.5.0)
     erubis (2.7.0)
     execjs (2.8.1)
-    factory_girl (4.9.0)
-      activesupport (>= 3.0.0)
-    factory_girl_rails (4.9.0)
-      factory_girl (~> 4.9.0)
-      railties (>= 3.0.0)
+    factory_bot (5.2.0)
+      activesupport (>= 4.2.0)
     ffi (1.15.5)
     font-awesome-rails (4.7.0.8)
       railties (>= 3.2, < 8.0)
@@ -250,7 +247,7 @@ DEPENDENCIES
   capybara
   devise (~> 4.1.1)
   devise-i18n
-  factory_girl_rails (~> 4.0)
+  factory_bot
   font-awesome-rails
   jquery-rails
   launchy
