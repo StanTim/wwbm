@@ -22,7 +22,7 @@ group :development, :test do
   gem 'sqlite3', '~> 1.3.6'
   gem 'byebug'
   gem 'rspec-rails', '~> 3.4'
-  gem 'factory_bot'
+  gem "factory_girl_rails", "~> 4.0"
   gem 'shoulda-matchers'
 
   # Гем, который использует rspec, чтобы смотреть наш сайт
