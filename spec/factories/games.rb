@@ -4,17 +4,17 @@
 #
 # см. другие примеры на
 #
-# http://www.rubydoc.info/gems/factory_girl/file/GETTING_STARTED.md
-FactoryGirl.define do
+# http://www.rubydoc.info/gems/factory_Bot/file/GETTING_STARTED.md
+FactoryBot.define do
   factory :game do
     # Связь с юзером
     association :user
 
     # Игра только начата, создаем объект с нужными полями
-    finished_at nil
-    current_level 0
-    is_failed false
-    prize 0
+    finished_at { nil }
+    current_level { 0 }
+    is_failed { false }
+    prize { 0 }
 
     # Фабрика :game создает объект Game без дочерних игровых вопросов, в такую
     # игру играть нельзя, поэтому мы расширяем эту фабрику, добавляя ещё одну:

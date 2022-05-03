@@ -4,8 +4,8 @@
 #
 # См. другие примеры на
 #
-# http://www.rubydoc.info/gems/factory_girl/file/GETTING_STARTED.md
-FactoryGirl.define do
+# http://www.rubydoc.info/gems/factory_Bot/file/GETTING_STARTED.md
+FactoryBot.define do
   # Фабрика, создающая юзеров
   factory :user do
     # Генерим рандомное имя
@@ -17,10 +17,10 @@ FactoryGirl.define do
     sequence(:email) { |n| "someguy_#{n}@example.com" }
 
     # Всегда создается с флажком false, ничего не генерим
-    is_admin false
+    is_admin { false }
 
     # Всегда нулевой
-    balance 0
+    balance { 0 }
 
     # Коллбэк — после фазы :build записываем поля паролей, иначе Devise не
     # позволит создать юзера
