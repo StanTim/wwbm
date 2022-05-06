@@ -70,6 +70,9 @@ RSpec.describe Game, type: :model do
       # Ранее текущий вопрос стал предыдущим
       expect(game_w_questions.current_game_question).not_to eq(q)
 
+      # Следующий вопрос стал текущим
+      expect(game_w_questions.current_game_question.id).to eq(q.id + 1)
+
       # Игра продолжается
       expect(game_w_questions.status).to eq(:in_progress)
       expect(game_w_questions.finished?).to be_falsey
