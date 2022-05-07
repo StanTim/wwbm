@@ -15,22 +15,29 @@ RSpec.describe GameQuestion, type: :model do
   # Группа тестов на игровое состояние объекта вопроса
   context 'game status' do
     # Тест на правильную генерацию хэша с вариантами
-    it 'correct .variants' do
-      expect(game_question.variants).to eq(
-        'a' => game_question.question.answer2,
-        'b' => game_question.question.answer1,
-        'c' => game_question.question.answer4,
-        'd' => game_question.question.answer3
-      )
+    describe '.variants' do
+      it 'correct answer variants' do
+        expect(game_question.variants).to eq(
+          'a' => game_question.question.answer2,
+          'b' => game_question.question.answer1,
+          'c' => game_question.question.answer4,
+          'd' => game_question.question.answer3
+        )
+      end
     end
 
-    it 'correct .answer_correct?' do
-      # Именно под буквой b в тесте мы спрятали указатель на верный ответ
-      expect(game_question.answer_correct?('b')).to be_truthy
+    describe '#answer_correct?' do
+      it 'must be right answer' do
+        # Именно под буквой b в тесте мы спрятали указатель на верный ответ
+        expect(game_question.answer_correct?('b')).to be_truthy
+      end
     end
 
-    it 'correct .correct_answer_key' do
-      expect(game_question.correct_answer_key).to eq 'b'
+    describe '.correct_answer_key' do
+      it 'must be right answer key' do
+        expect(game_question.correct_answer_key).to eq 'b'
+        expect(game_question.correct_answer_key).to be_a(String)
+      end
     end
   end
 
