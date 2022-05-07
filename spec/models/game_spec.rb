@@ -121,5 +121,27 @@ RSpec.describe Game, type: :model do
         expect(game_w_questions.current_game_question.level).to eq(q.question.level)
       end
     end
+
+    describe '#answer_current_question!' do
+      # Если пользователь дал верный ответ.
+      it 'when answer is right' do
+        a = game_w_questions.current_game_question.correct_answer_key
+        expect(game_w_questions.answer_current_question!(a)).to be_truthy
+      end
+
+      # Если пользователь дал неправильный ответ.
+      it 'when answer is wrong' do
+        a = (%w(a b c d) - [game_w_questions.current_game_question.correct_answer_key]).sample
+        expect(game_w_questions.answer_current_question!(a)).to be_falsey
+      end
+
+      # it 'when answer number is 15' do
+      #
+      # end
+      #
+      # it 'when timeout' do
+      #
+      # end
+    end
   end
 end
