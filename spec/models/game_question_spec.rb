@@ -22,7 +22,7 @@ RSpec.describe GameQuestion, type: :model do
           'b' => game_question.question.answer1,
           'c' => game_question.question.answer4,
           'd' => game_question.question.answer3
-        )
+                                          )
       end
     end
 
@@ -36,6 +36,9 @@ RSpec.describe GameQuestion, type: :model do
     describe '.correct_answer_key' do
       it 'must be right answer key' do
         expect(game_question.correct_answer_key).to eq 'b'
+      end
+
+      it 'should be a string' do
         expect(game_question.correct_answer_key).to be_a(String)
       end
     end
