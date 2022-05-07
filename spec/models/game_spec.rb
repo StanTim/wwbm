@@ -106,7 +106,7 @@ RSpec.describe Game, type: :model do
     end
 
     describe '.previous_level' do
-      # Предыдущий уровень стал уровнем
+      # Предыдущий уровень стал на один уровень ниже
       it 'previous level should be one step down' do
         level = game_w_questions.current_level
         expect(game_w_questions.previous_level).to eq(level - 1)
