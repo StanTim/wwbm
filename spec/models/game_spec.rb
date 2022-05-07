@@ -64,14 +64,8 @@ RSpec.describe Game, type: :model do
       # Перешли на след. уровень
       expect(game_w_questions.current_level).to eq(level + 1)
 
-      # Предыдущий уровень стал уровнем
-      expect(game_w_questions.previous_level).to eq(level)
-
       # Ранее текущий вопрос стал предыдущим
       expect(game_w_questions.current_game_question).not_to eq(q)
-
-      # Следующий вопрос стал текущим
-      expect(game_w_questions.current_game_question.id).to eq(q.id + 1)
 
       # Игра продолжается
       expect(game_w_questions.status).to eq(:in_progress)
@@ -109,6 +103,23 @@ RSpec.describe Game, type: :model do
       expect(game_w_questions.status).to eq :money
       expect(game_w_questions.finished?).to be_truthy
       expect(user.balance).to eq prize
+    end
+
+    describe '.previous_level' do
+      # Предыдущий уровень стал уровнем
+      it 'previous level should be one step down' do
+        level = game_w_questions.current_level
+        expect(game_w_questions.previous_level).to eq(level - 1)
+      end
+    end
+
+    describe '.current_game_question' do
+      # Следующий вопрос стал текущим
+      it 'next question should be current' do
+        q = game_w_questions.current_game_question
+        expect(game_w_questions.current_game_question.id).to eq(q.id)
+        expect(game_w_questions.current_game_question.level).to eq(q.question.level)
+      end
     end
   end
 end
