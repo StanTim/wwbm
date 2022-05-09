@@ -137,16 +137,14 @@ RSpec.describe Game, type: :model do
       end
 
       # Правильный ответ на последний вопрос.
-      let(:current_level) { game_w_questions.update(current_level: Question::QUESTION_LEVELS.max) }
+      let(:current_level) { game_w_questions.new(current_level: Question::QUESTION_LEVELS.max) }
       it 'when final question answer' do
         expect(game_w_questions.answer_current_question!(right_answer)).to be true
       end
 
       # Правильный ответ по завершении времени.
-      # let(:game_w_questions1) { game_w_questions.update(created_at:
-      #   (Game::TIME_LIMIT.ago + 1.seconds)) }
       it 'when timeout' do
-        game_w_questions.created_at = (Game::TIME_LIMIT + 1.second).ago
+      game_w_questions.created_at = (Game::TIME_LIMIT + 1.second).ago
         expect(game_w_questions.answer_current_question!(right_answer)).to be false
       end
     end
