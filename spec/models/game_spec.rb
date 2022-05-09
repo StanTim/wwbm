@@ -109,8 +109,7 @@ RSpec.describe Game, type: :model do
     describe '.previous_level' do
       # Предыдущий уровень стал на один уровень ниже
       it 'previous level should be one step down' do
-        level = game_w_questions.current_level
-        expect(game_w_questions.previous_level).to eq(level - 1)
+        expect(game_w_questions.previous_level).to eq(-1)
       end
     end
 
@@ -118,8 +117,7 @@ RSpec.describe Game, type: :model do
       # Следующий вопрос стал текущим
       it 'next question should be current' do
         q = game_w_questions.current_game_question
-        expect(game_w_questions.current_game_question.id).to eq(q.id)
-        expect(game_w_questions.current_game_question.level).to eq(q.question.level)
+        expect(game_w_questions.current_level).to eq(q.level)
       end
     end
 
