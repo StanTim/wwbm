@@ -70,6 +70,7 @@ RSpec.describe Game, type: :model do
       # Игра продолжается
       expect(game_w_questions.status).to eq(:in_progress)
       expect(game_w_questions.finished?).to be_falsey
+
     end
 
     it 'take money by user is correct' do
@@ -124,24 +125,30 @@ RSpec.describe Game, type: :model do
 
     describe '#answer_current_question!' do
       # Если пользователь дал верный ответ.
-      it 'when answer is right' do
-        a = game_w_questions.current_game_question.correct_answer_key
-        expect(game_w_questions.answer_current_question!(a)).to be_truthy
+      let(:right_answer) { game_w_questions.current_game_question.correct_answer_key }
+      it 'when right answer' do
+        expect(game_w_questions.answer_current_question!(right_answer)).to be true
       end
 
       # Если пользователь дал неправильный ответ.
+      let(:wrong_answer) { (%w(a b c d) - [right_answer]).sample }
       it 'when answer is wrong' do
-        a = (%w(a b c d) - [game_w_questions.current_game_question.correct_answer_key]).sample
-        expect(game_w_questions.answer_current_question!(a)).to be_falsey
+        expect(game_w_questions.answer_current_question!(wrong_answer)).to be false
       end
 
-      # it 'when answer number is 15' do
-      #
-      # end
-      #
-      # it 'when timeout' do
-      #
-      # end
+      # Правильный ответ на последний вопрос.
+      let(:current_level) { game_w_questions.update(current_level: Question::QUESTION_LEVELS.max) }
+      it 'when final question answer' do
+        expect(game_w_questions.answer_current_question!(right_answer)).to be true
+      end
+
+      # Правильный ответ по завершении времени.
+      # let(:game_w_questions1) { game_w_questions.update(created_at:
+      #   (Game::TIME_LIMIT.ago + 1.seconds)) }
+      it 'when timeout' do
+        game_w_questions.created_at = (Game::TIME_LIMIT + 1.second).ago
+        expect(game_w_questions.answer_current_question!(right_answer)).to be false
+      end
     end
   end
 end
