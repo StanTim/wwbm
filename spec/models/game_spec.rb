@@ -116,8 +116,8 @@ RSpec.describe Game, type: :model do
     describe '.current_game_question' do
       # Следующий вопрос стал текущим
       it 'next question should be current' do
-        q = game_w_questions.current_game_question
-        expect(game_w_questions.current_level).to eq(q.level)
+        l = game_w_questions.current_level
+        expect(game_w_questions.current_game_question).to eq(game_w_questions.game_questions[l])
       end
     end
 
