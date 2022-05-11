@@ -128,13 +128,15 @@ RSpec.describe Game, type: :model do
       context 'when right answer' do
         it 'should return true' do
           expect(game_w_questions.answer_current_question!(right_answer)).to be true
+        end
 
+        it 'should change game level up' do
           l = game_w_questions.current_level
           expect { game_w_questions.answer_current_question!(right_answer) }
             .to change { game_w_questions.current_level }.from(l).to(l + 1)
         end
 
-        it 'should тще change status' do
+        it 'should change status' do
           expect { game_w_questions.answer_current_question!(right_answer) }
             .to_not change { game_w_questions.status }
         end
