@@ -11,22 +11,24 @@ require 'support/my_spec_helper' # наш собственный класс с �
 #
 RSpec.describe GamesController, type: :controller do
   # обычный пользователь
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryBot.create(:user) }
   # админ
-  let(:admin) { FactoryGirl.create(:user, is_admin: true) }
+  let(:admin) { FactoryBot.create(:user, is_admin: true) }
   # игра с прописанными игровыми вопросами
-  let(:game_w_questions) { FactoryGirl.create(:game_with_questions, user: user) }
+  let(:game_w_questions) { FactoryBot.create(:game_with_questions, user: user) }
 
   # группа тестов для незалогиненного юзера (Анонимус)
   context 'Anon' do
-    # из экшена show анона посылаем
-    it 'kick from #show' do
-      # вызываем экшен
-      get :show, id: game_w_questions.id
-      # проверяем ответ
-      expect(response.status).not_to eq(200) # статус не 200 ОК
-      expect(response).to redirect_to(new_user_session_path) # devise должен отправить на логин
-      expect(flash[:alert]).to be # во flash должен быть прописана ошибка
+    # Анонимный (незалогиненный) посетитель не может вызвать действия
+    it 'kick from #show #create #take_money' do
+      [:show, :create, :take_money].each do |action|
+        # вызываем экшен
+        get action, id: game_w_questions.id
+        # проверяем ответ
+        expect(response.status).not_to eq(200) # статус не 200 ОК
+        expect(response).to redirect_to(new_user_session_path) # devise должен отправить на логин
+        expect(flash[:alert]).to be # во flash должен быть прописана ошибка
+      end
     end
   end
 
@@ -74,13 +76,10 @@ RSpec.describe GamesController, type: :controller do
       expect(flash.empty?).to be_truthy # удачный ответ не заполняет flash
     end
 
-
-    #----------- Вариант решения ДЗ ---------------------------------
-
     # проверка, что пользовтеля посылают из чужой игры
     it '#show alien game' do
       # создаем новую игру, юзер не прописан, будет создан фабрикой новый
-      alien_game = FactoryGirl.create(:game_with_questions)
+      alien_game = FactoryBot.create(:game_with_questions)
 
       # пробуем зайти на эту игру текущий залогиненным user
       get :show, id: alien_game.id
