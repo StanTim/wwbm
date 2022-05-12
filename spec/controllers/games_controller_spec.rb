@@ -81,29 +81,34 @@ RSpec.describe GamesController, type: :controller do
       expect(response).to render_template('show') # и отрендерить шаблон show
     end
 
-    # юзер отвечает на игру корректно - игра продолжается
-    it 'answers correct' do
-      # передаем параметр params[:letter]
-      put :answer, id: game_w_questions.id, letter: game_w_questions.current_game_question.correct_answer_key
-      game = assigns(:game)
+    describe '#answer' do
+      context 'when registered user' do
+        # юзер отвечает на игру корректно - игра продолжается
+        it 'and answers correct' do
+          # передаем параметр params[:letter]
+          put :answer, id: game_w_questions.id, letter: game_w_questions.current_game_question.correct_answer_key
+          game = assigns(:game)
 
-      expect(game.finished?).to be_falsey
-      expect(game.current_level).to be > 0
-      expect(response).to redirect_to(game_path(game))
-      expect(flash.empty?).to be_truthy # удачный ответ не заполняет flash
-    end
+          expect(game.finished?).to be false
+          expect(game.current_level).to be > 0
+          expect(response).to redirect_to(game_path(game))
+          expect(flash.empty?).to be true # удачный ответ не заполняет flash
+        end
 
-    # юзер не отвечает корректно -- игра завершается
-    it 'answers is not correct' do
-      not_correct_answer = (%w(a b c d) - [game_w_questions.current_game_question.correct_answer_key]).sample
-      # передаем параметр params[:letter]
-      put :answer, id: game_w_questions.id, letter: not_correct_answer
-      game = assigns(:game)
+        # юзер не отвечает корректно -- игра завершается
+        it 'and answers is not correct' do
+          not_correct_answer = (%w[a b c d] - [game_w_questions.current_game_question.correct_answer_key]).sample
+          # передаем параметр params[:letter]
+          put :answer, id: game_w_questions.id, letter: not_correct_answer
+          game = assigns(:game)
 
-      expect(game.finished?).to be_truthy
-      expect(game.current_level).to eq(0)
-      expect(response).to redirect_to(user_path(user))
-      expect(flash.empty?).to be_falsey # неудачный ответ заполняет flash
+          expect(game.finished?).to be true
+          expect(game.current_level).to be_zero
+          expect(response).to redirect_to(user_path(user))
+          expect(flash.empty?).to be false
+          expect(flash[:alert]).to be_a(String)
+        end
+      end
     end
 
     # проверка, что пользовтеля посылают из чужой игры
