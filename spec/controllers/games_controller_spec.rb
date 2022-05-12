@@ -20,15 +20,32 @@ RSpec.describe GamesController, type: :controller do
   # группа тестов для незалогиненного юзера (Анонимус)
   context 'Anon' do
     # Анонимный (незалогиненный) посетитель не может вызвать действия
-    it 'kick from #show #create #take_money' do
-      [:show, :create, :take_money].each do |action|
-        # вызываем экшен
-        get action, id: game_w_questions.id
-        # проверяем ответ
-        expect(response.status).not_to eq(200) # статус не 200 ОК
-        expect(response).to redirect_to(new_user_session_path) # devise должен отправить на логин
-        expect(flash[:alert]).to be # во flash должен быть прописана ошибка
-      end
+    it 'kick from #show' do
+      get :show, id: game_w_questions.id
+      expect(response.status).not_to eq(200) # статус не 200 ОК
+      expect(response).to redirect_to(new_user_session_path) # devise должен отправить на логин
+      expect(flash[:alert]).to be # во flash должен быть прописана ошибка
+    end
+
+    it 'kick from #create' do
+      post :create, id: game_w_questions.id
+      expect(response.status).not_to eq(200) # статус не 200 ОК
+      expect(response).to redirect_to(new_user_session_path) # devise должен отправить на логин
+      expect(flash[:alert]).to be # во flash должен быть прописана ошибка
+    end
+
+    it 'kick from #answer' do
+      put :create, id: game_w_questions.id
+      expect(response.status).not_to eq(200) # статус не 200 ОК
+      expect(response).to redirect_to(new_user_session_path) # devise должен отправить на логин
+      expect(flash[:alert]).to be # во flash должен быть прописана ошибка
+    end
+
+    it 'kick from #take_money' do
+      put :create, id: game_w_questions.id
+      expect(response.status).not_to eq(200) # статус не 200 ОК
+      expect(response).to redirect_to(new_user_session_path) # devise должен отправить на логин
+      expect(flash[:alert]).to be # во flash должен быть прописана ошибка
     end
   end
 
