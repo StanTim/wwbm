@@ -78,9 +78,9 @@ RSpec.describe GamesController, type: :controller do
 
     # юзер не отвечает корректно -- игра завершается
     it 'answers is not correct' do
-      not_correct_answer = %w(a b c d) - [game_w_questions.current_game_question.correct_answer_key]
+      not_correct_answer = (%w(a b c d) - [game_w_questions.current_game_question.correct_answer_key]).sample
       # передаем параметр params[:letter]
-      put :answer, id: game_w_questions.id, letter: not_correct_answer.sample
+      put :answer, id: game_w_questions.id, letter: not_correct_answer
       game = assigns(:game)
 
       expect(game.finished?).to be_truthy
