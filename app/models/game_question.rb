@@ -25,6 +25,8 @@ class GameQuestion < ActiveRecord::Base
   # Без игры и вопроса — игровой вопрос не имеет смысла
   validates :game, :question, presence: true
 
+  serialize :help_hash, Hash
+
   # В полях a, b, c и d прячутся индексы ответов из объекта :game. Каждый из
   # них — целое число от 1 до 4.
   validates :a, :b, :c, :d, inclusion: {in: 1..4}
