@@ -19,38 +19,66 @@ RSpec.describe GamesController, type: :controller do
 
   describe '#create' do
     context 'when registered user' do
-      before(:each) { sign_in user } # логиним юзера user с помощью спец. Devise метода sign_in
-
-      # юзер может создать новую игру
-      it 'creates game' do
-        # сперва накидаем вопросов, из чего собирать новую игру
+      # логиним юзера user с помощью спец. Devise метода sign_in
+      before do
+        sign_in user
+        # накидаем вопросов, из чего собирать новую игру
         generate_questions(15)
-
         post :create
-        game = assigns(:game) # вытаскиваем из контроллера поле @game
+      end
 
-        # проверяем состояние этой игры
-        expect(game.finished?).to be_falsey
-        expect(game.user).to eq(user)
+      let(:game) { assigns(:game) } # вытаскиваем из контроллера поле @game
+      context 'create new game' do
+
+        # юзер может создать новую игру
+        it 'should create game' do
+          # проверяем состояние этой игры
+          expect(game.finished?).to be false
+        end
+
+        # игра принадлежит юзеру
+        it 'should be a game owner' do
+          expect(game.user).to eq(user)
+        end
+
         # и редирект на страницу этой игры
-        expect(response).to redirect_to(game_path(game))
-        expect(flash[:notice]).to be
+        it 'should redirect to game page' do
+          expect(response).to redirect_to(game_path(game))
+        end
+
+        it 'should show notice' do
+          expect(flash[:notice]).to be
+        end
       end
 
       # юзер пытается создать новую игру, не закончив старую
-      it 'try to create second game' do
-        # убедились что есть игра в работе
-        expect(game_w_questions.finished?).to be_falsey
-
+      let(:game1) { assigns(:game1) }
+      context 'trying to create one more game' do
+        # вытаскиваем из контроллера поле @game
         # отправляем запрос на создание, убеждаемся что новых Game не создалось
-        expect { post :create }.to change(Game, :count).by(0)
 
-        game = assigns(:game) # вытаскиваем из контроллера поле @game
-        expect(game).to be_nil
+        it 'should be nil' do
+          expect(game1).to be_nil
+        end
+
+        it 'should be false' do
+          # убедились что есть игра в работе
+          expect(game_w_questions.finished?).to be false
+        end
+
+        it 'should not change game quantity' do
+          expect { post :create }.to change(Game, :count).by(0)
+        end
 
         # и редирект на страницу старой игры
-        expect(response).to redirect_to(game_path(game_w_questions))
-        expect(flash[:alert]).to be
+        it 'should redirect to first game' do
+          expect(response).to redirect_to(game_path(game))
+        end
+
+        # предупреждение о недопустимости более одной игры
+        it 'flash alert should to be' do
+          expect(flash[:notice]).to be
+        end
       end
     end
 
@@ -64,9 +92,10 @@ RSpec.describe GamesController, type: :controller do
 
     end
   end
+
   describe '#show' do
     context 'when registered user' do
-      before(:each) { sign_in user } # логиним юзера user с помощью спец. Devise метода sign_in
+      before { sign_in user } # логиним юзера user с помощью спец. Devise метода sign_in
       # юзер видит свою игру
       it '#show game' do
         get :show, id: game_w_questions.id
@@ -107,7 +136,7 @@ RSpec.describe GamesController, type: :controller do
   describe '#answer' do
     context 'when registered user' do
       # перед каждым тестом в группе
-      before(:each) { sign_in user } # логиним юзера user с помощью спец. Devise метода sign_in
+      before { sign_in user } # логиним юзера user с помощью спец. Devise метода sign_in
       # юзер отвечает на игру корректно - игра продолжается
       it 'and answers correct' do
         # передаем параметр params[:letter]
