@@ -24,6 +24,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.4'
   gem 'factory_bot_rails'
   gem 'shoulda-matchers'
+  gem 'database_cleaner-active_record'
 
   # Гем, который использует rspec, чтобы смотреть наш сайт
   gem 'capybara'
